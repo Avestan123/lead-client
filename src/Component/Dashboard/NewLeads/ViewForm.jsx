@@ -125,6 +125,8 @@ function ViewForm() {
     setValue("electricityBill", useData.electricityBill);
     setValue("gstnumber", useData.gstnumber);
     setValue("contactperson", useData.contactperson);
+    setValue("source",useData.source)
+    setValue("sourceurl", useData.sourceurl)
 
     setFollowUps(useData.additionalFollowups || []);
     // additional followups
@@ -166,13 +168,15 @@ function ViewForm() {
     formData.append("followUpDate", data.followUpDate);
     formData.append("requirement", data.requirement);
     formData.append("remarks", data.remarks);
-    formData.append("clientlevel", data.clientlevel);
+    formData.append("source",data.source);
+    formData.append("url", data.url)
 
     // Append file fields to the formData
     formData.append("electricityBill", data.electricityBill);
     formData.append("pancard", data.pancard);
     formData.append("adharcard", data.adharcard);
     formData.append("textRecipe", data.textRecipe);
+   
 
     if (data.gstnumber) {
       formData.append("gstnumber", data.gstnumber);
@@ -380,66 +384,7 @@ function ViewForm() {
           </Box>
         </Stack>
 
-        {/* rendering if client contact person name is available && GST number */}
-
-        {useData.contactperson && useData.gstnumber ? (
-          <Stack
-            direction={{ base: "column", md: "row" }}
-            spacing={6}
-            alignItems="center"
-            mx="1rem"
-            py={"1rem"}
-          >
-            <Box>
-              <FormControl isRequired>
-                <FormLabel>Contact Person Name</FormLabel>
-                <Input
-                  marginTop={"0.5rem"}
-                  isRequired
-                  type="text"
-                  width={{ base: "100%", md: "400px" }}
-                  height={"50px"}
-                  backgroundColor="gray.100"
-                  // border={"1px solid #707070"}
-                  contentEditable
-                  name="contactperson"
-                  id="contactperson"
-                  isDisabled={isAdmin ? false : true}
-                  color="dark"
-                  // value = {clientName}
-                  // onChange={(e) => setClientName(e.target.value)}
-                  {...register("contactperson")}
-                />
-                {errors.clientName && (
-                  <Text color="red.500">{errors.clientName.message}</Text>
-                )}
-              </FormControl>
-            </Box>
-            <Box>
-              <FormControl>
-                <FormLabel>GST Number</FormLabel>
-                <Input
-                  marginTop={"0.5rem"}
-                  type="number"
-                  width={{ base: "100%", md: "400px" }}
-                  height={"50px"}
-                  border={"1px solid #707070"}
-                  // value = {data.email}
-                  backgroundColor="gray.100"
-                  name="number"
-                  id="number"
-                  isDisabled={isAdmin ? false : true}
-                  {...register("gstnumber")}
-                />
-                {errors.email && (
-                  <Text color="red.500">{errors.email.message}</Text>
-                )}
-              </FormControl>
-            </Box>
-          </Stack>
-        ) : (
-          " "
-        )}
+       
 
         {/* dob and number */}
         <Stack
@@ -449,30 +394,7 @@ function ViewForm() {
           mx="1rem"
           mt="1rem"
         >
-          <Box>
-            <FormControl>
-              <FormLabel>D.O.B</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="date"
-                width={{ base: "100%", md: "400px" }}
-                height={"50px"}
-                border={"1px solid #707070"}
-                // value = {data.number}
-                backgroundColor="gray.100"
-                name="dob"
-                id="dob"
-                isDisabled={isAdmin ? false : true}
-                {...register("dob", {
-                  // required: "DOB is required",
-                  message: "invalid Date of Birth",
-                })}
-              />
-              {errors.number && (
-                <Text color="red.500">{errors.number.message}</Text>
-              )}
-            </FormControl>
-          </Box>
+          
           <Box>
             <FormControl isRequired>
               <FormLabel>Mobile Number</FormLabel>
@@ -495,6 +417,31 @@ function ViewForm() {
               />
               {errors.number && (
                 <Text color="red.500">{errors.number.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl isRequired>
+              <FormLabel>Address</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                type="text"
+                width={{ base: "100%", md: "400px" }}
+                height={"50px"}
+                border={"1px solid #707070"}
+                isRequired
+                backgroundColor="gray.100"
+                // value = {data.address}
+                name="address"
+                id="address"
+                isDisabled={isAdmin ? false : true}
+                {...register("address", {
+                  required: "Address is required",
+                  message: "invalid address",
+                })}
+              />
+              {errors.address && (
+                <Text color="red.500">{errors.address.message}</Text>
               )}
             </FormControl>
           </Box>
@@ -560,66 +507,7 @@ function ViewForm() {
           </Box>
         </Stack>
 
-        {/* city and followupdate*/}
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={6}
-          alignItems="center"
-          mx="1rem"
-          mt="1rem"
-        >
-          <Box>
-            <FormControl isRequired>
-              <FormLabel>City</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                isRequired
-                type="text"
-                width={{ base: "100%", md: "400px" }}
-                height={"50px"}
-                border={"1px solid #707070"}
-                // value = {data.city}
-                backgroundColor="gray.100"
-                name="city"
-                id="city"
-                isDisabled={isAdmin ? false : true}
-                {...register("city", {
-                  required: "City Name is required",
-                  message: "invalid city",
-                })}
-              />
-              {errors.city && (
-                <Text color="red.500">{errors.city.message}</Text>
-              )}
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl isRequired>
-              <FormLabel>Follow Up Date</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="date"
-                width={{ base: "250px", md: "400px" }}
-                height={"50px"}
-                border={"1px solid #707070"}
-                isRequired
-                // value = {data.followUpDate}
-                backgroundColor="gray.100"
-                name="followUpDate"
-                id="followUpDate"
-                isDisabled={isAdmin ? false : true}
-                {...register("followUpDate", {
-                  required: "followUpDate is required",
-                  message: "invalid followUpDate",
-                })}
-              />
-              {errors.date && (
-                <Text color="red.500">{errors.date.message}</Text>
-              )}
-            </FormControl>
-          </Box>
-        </Stack>
-
+      
         {/* Requirements & remarks */}
         <Stack
           direction={{ base: "column", md: "row" }}
@@ -630,7 +518,7 @@ function ViewForm() {
         >
           <Box>
             <FormControl isRequired>
-              <FormLabel>Requirement</FormLabel>
+              <FormLabel>Client Type</FormLabel>
               <Select
                 placeholder="Select option"
                 marginTop={"0.5rem"}
@@ -662,7 +550,7 @@ function ViewForm() {
           </Box>
           <Box>
             <FormControl isRequired>
-              <FormLabel>Remarks</FormLabel>
+              <FormLabel>Customer Requirement</FormLabel>
               <Input
                 marginTop={"0.5rem"}
                 isRequired
@@ -687,8 +575,8 @@ function ViewForm() {
           </Box>
         </Stack>
 
-        {/* level */}
-        <Stack
+         {/* Source & Url */}
+         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
           alignItems="center"
@@ -697,61 +585,92 @@ function ViewForm() {
         >
           <Box>
             <FormControl isRequired>
-              <FormLabel>Client Level</FormLabel>
-              <Select
-                placeholder="Select option"
+              <FormLabel>Client Source</FormLabel>
+              <Input
                 marginTop={"0.5rem"}
-                // isRequired
+                isRequired
                 type="text"
                 width={{ base: "100%", md: "400px" }}
                 height={"50px"}
-                border={"1px solid #707070"}
-                control={control}
                 backgroundColor="gray.100"
-                name="requirement"
-                id="requirement"
-                isDisabled={isAdmin ? false : true}
-                onChange={(e) => handleSelectChange(e.target.value)}
-                // value={data.requirement}
-                // value={watch('requirement')}
-                {...register("clientlevel", {
-                  // required: "Clientlevel Role is required",
+                placeholder="enter name"
+                control={control}
+                name="source"
+                id="source"
+                {...register("source", {
+                  required: "source is required",
                   message: "invalid input",
                 })}
-              >
-                <option value="Small">Small</option>
-                <option value="Mid">Mid</option>
-                <option value="High-value">High-value</option>
-              </Select>
-              {errors.clientlevel && (
-                <Text color="red.500">{errors.clientlevel.message}</Text>
+              />
+                
+              {errors.requirement && (
+                <Text color="red.500">{errors.requirement.message}</Text>
               )}
             </FormControl>
           </Box>
-          {/* <Box>
-          <FormControl isRequired>
-            <FormLabel>Remarks</FormLabel>
-            <Input
-              marginTop={"0.5rem"}
-              isRequired
-              type="text"
-              width={{ base: "100%", md: "400px" }}
-              height={"30px"}
-              border={"1px solid #707070"}
-              // value = {data.remarks}
-              name="city"
-              id="city"
-              placeholder="Enter remarks"
-              {...register('remarks', {
-                required: 'Remarks are required for Project',
-              })}
-            />
-            {errors.remarks && (
-              <Text color="red.500">{errors.remarks.message}</Text>
-            )}
-          </FormControl>
-        </Box> */}
+          <Box>
+            <FormControl isRequired>
+              <FormLabel>Source Url</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                type="url"
+                width={{ base: "250px", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                placeholder="enter requirement"
+                isRequired
+                min={getCurrentDate()} // Set the minimum date
+                control={control}
+                name="sourceurl"
+                id="sourceurl"
+                {...register("sourceurl", {
+                  required: "sourceurl is required",
+                  message: "invalid sourceurl",
+                })}
+              />
+              {errors.sourceurl && (
+                <Text color="red.500">{errors.sourceurl.message}</Text>
+              )}
+            </FormControl>
+          </Box>
         </Stack>
+
+        {/* city and followupdate*/}
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={6}
+          alignItems="center"
+          mx="1rem"
+          mt="1rem"
+        >
+          
+          <Box>
+            <FormControl isRequired>
+              <FormLabel>Follow Up Date</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                type="date"
+                width={{ base: "250px", md: "400px" }}
+                height={"50px"}
+                border={"1px solid #707070"}
+                isRequired
+                // value = {data.followUpDate}
+                backgroundColor="gray.100"
+                name="followUpDate"
+                id="followUpDate"
+                isDisabled={isAdmin ? false : true}
+                {...register("followUpDate", {
+                  required: "followUpDate is required",
+                  message: "invalid followUpDate",
+                })}
+              />
+              {errors.date && (
+                <Text color="red.500">{errors.date.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+        </Stack>
+
 
         {/* divider */}
         <Center w="100%" mt="2">
@@ -846,12 +765,7 @@ function ViewForm() {
                 Add more followups
               </Button>
 
-              {/* routing to go to work order page */}
-              <Button colorScheme="green">
-                <Link to="/workorder/WorkOrderform" state={useData}>
-                  Go to Work Order
-                </Link>
-              </Button>
+             
 
               <Button
                 colorScheme="red"

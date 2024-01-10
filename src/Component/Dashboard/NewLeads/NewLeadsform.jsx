@@ -94,23 +94,16 @@ function NewLeadsform() {
     formData.append("clientName", data.clientName);
     formData.append("email", data.email);
     formData.append("number", data.number);
-    formData.append("altNumber", data.altNumber);
     formData.append("address", data.address);
-    formData.append("city", data.city);
     formData.append("followUpDate", data.followUpDate);
     formData.append("requirement", data.requirement);
     formData.append("remarks", data.remarks);
-    formData.append("clientlevel", data.clientlevel);
     // formData.append("electricityBill", data.electricity[0]);
     // formData.append("pancard", data.pan[0]);
     // formData.append("adharcard", data.aadhar[0]);
     // formData.append("textRecipe", data.tax[0]);
-    formData.append("state", Getstate);
-    formData.append("contactPerson", data.contactPersonName);
-    formData.append("gst", data.gstNumber);
     formData.append("source", data.source);
-    formData.append("otherSource", data.otherSource);
-    formData.append("dob", data.dob);
+    formData.append("sourceurl", data.sourceurl)
 
     const apiUrl = import.meta.env.VITE_APP_API_URL;
     let response = await fetch(`${apiUrl}/sales/addCustomer`, {
@@ -145,70 +138,8 @@ function NewLeadsform() {
     }
   };
 
-  const saveAndTransfer = async (data) => {
-    console.log(data);
-    const token = localStorage.getItem("token");
-    let formData = new FormData();
-    formData.append("clientName", data.clientName);
-    formData.append("email", data.email);
-    formData.append("number", data.number);
-    formData.append("altNumber", data.altNumber);
-    formData.append("address", data.address);
-    formData.append("city", data.city);
-    formData.append("followUpDate", data.followUpDate);
-    formData.append("requirement", data.requirement);
-    formData.append("remarks", data.remarks);
-    formData.append("clientlevel", data.clientlevel);
-    // formData.append("electricityBill", data.electricity[0]);
-    // formData.append("pancard", data.pan[0]);
-    // formData.append("adharcard", data.aadhar[0]);
-    // formData.append("textRecipe", data.tax[0]);
-    formData.append("state", Getstate);
-    formData.append("contactPerson", data.contactPersonName);
-    formData.append("gst", data.gstNumber);
-    formData.append("source", data.source);
-    formData.append("otherSource", data.otherSource);
-    formData.append("dob", data.dob);
+ 
 
-    const apiUrl = import.meta.env.VITE_APP_API_URL;
-    try {
-      let response = await fetch(`${apiUrl}/sales/saveAndTransfer`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        "Content-Type": "multipart/form-data",
-      });
-      let Resdata = await response.json();
-      if (Resdata.status === 200) {
-        toast({
-          title: "client Registered.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-          position: "top",
-        });
-        // resetForm(data);
-        navigate("/newleads");
-      } else {
-        // resetForm(data);
-
-        toast({
-          title: Resdata.error || "something wrong",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-          position: "top",
-        });
-      }
-    } catch (error) {
-      alert("Error during API call:", error);
-    }
-  };
-
-  const states = State.getStatesOfCountry("IN");
-  const cities = City.getCitiesOfState("IN", Getstate);
 
   return (
     <>
@@ -426,7 +357,7 @@ function NewLeadsform() {
           </Box>
         </Stack> */}
 
-        {/* PIN and requirement */}
+        {/* Client type & Requirement */}
         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
@@ -451,11 +382,9 @@ function NewLeadsform() {
                 onChange={(e) => handleSelectChange(e.target.value)}
                 value={watch("requirement")}
                 {...register("requirement", {
-                  required: "Requirement Role is required",
+                  required: "Client Type is required",
                   message: "invalid input",
                 })}
-
-
               >
                 <option value="Project">Project</option>
                 <option value="Staffing">Staffing</option>
@@ -481,12 +410,72 @@ function NewLeadsform() {
                 name="remarks"
                 id="remarks"
                 {...register("remarks", {
-                  required: "remarks is required",
+                  required: "Requirement  is required",
                   message: "invalid remarks",
                 })}
               />
               {errors.remarks && (
                 <Text color="red.500">{errors.remarks.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+         
+        </Stack>
+
+ {/* ClientSource & url */}
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={6}
+          alignItems="center"
+          mx="1rem"
+          mt="1rem"
+        >
+           <Box>
+            <FormControl isRequired>
+              <FormLabel>Client Source</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                isRequired
+                type="text"
+                width={{ base: "100%", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                placeholder="enter source"
+                control={control}
+                name="source"
+                id="source"
+                {...register("source", {
+                  required: "source is required",
+                  message: "invalid input",
+                })}
+              />
+              {errors.source && (
+                <Text color="red.500">{errors.source.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl isRequired>
+              <FormLabel>Source URL</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                type="url"
+                width={{ base: "250px", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                placeholder="enter requirement"
+                isRequired
+                min={getCurrentDate()} // Set the minimum date
+                control={control}
+                name="sourceurl"
+                id="sourceurl"
+                {...register("sourceurl", {
+                  required: "sourceurl is required",
+                  message: "invalid sourceurl",
+                })}
+              />
+              {errors.sourceurl && (
+                <Text color="red.500">{errors.sourceurl.message}</Text>
               )}
             </FormControl>
           </Box>
@@ -553,201 +542,7 @@ function NewLeadsform() {
           </Button>
         </Stack>
 
-        {/* Documents */}
-        {/* <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={6}
-          alignItems="center"
-          mx="1rem"
-          mt="1rem"
-        >
-          <Box>
-            <FormControl>
-              <FormLabel>Upload Electricity Bill</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                alignItems={"center"}
-                textAlign={"center"}
-                justifyContent={"center"}
-                isRequired
-                width={{ base: "250px", md: "400px" }}
-                type="file"
-                display="none"
-                height={"30px"}
-                border={"1px solid #707070"}
-                control={control}
-                name="electricity"
-                id="electricity"
-                {...register("electricity", {
-                  // required: "Electricity Bill is required",
-                  message: "invalid file",
-                })}
-              />
-              <Button
-                as="label"
-                htmlFor="electricity"
-                cursor="pointer"
-                marginTop={"0.5rem"}
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                px={2} // Padding on the x-axis
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                Choose File
-              </Button>
-              {errors.electricity && (
-                <Text color="red.500">{errors.electricity.message}</Text>
-              )}
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl>
-              <FormLabel>Upload Pan Card</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="file"
-                display="none"
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                control={control}
-                name="pan"
-                id="pan"
-                {...register("pan", {
-                  // required: "Pan Card is required",
-                  message: "invalid File",
-                })}
-              />
-              <Button
-                as="label"
-                htmlFor="pan"
-                cursor="pointer"
-                marginTop={"0.5rem"}
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                px={2} // Padding on the x-axis
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                Choose File
-              </Button>
-              {errors.pan && <Text color="red.500">{errors.pan.message}</Text>}
-            </FormControl>
-          </Box>
-        </Stack>
-
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={6}
-          alignItems="center"
-          mx="1rem"
-          mt="1rem"
-        >
-          <Box>
-            <FormControl>
-              <FormLabel>Upload Aadhar Card</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                isRequired
-                type="file"
-                display="none"
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                control={control}
-                name="aadhar"
-                id="aadhar"
-                {...register("aadhar", {
-                  // required: "Aadhar Card is required",
-                  message: "invalid file",
-                })}
-              />
-              <Button
-                as="label"
-                htmlFor="aadhar"
-                cursor="pointer"
-                marginTop={"0.5rem"}
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                px={2} // Padding on the x-axis
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                Choose File
-              </Button>
-              {errors.aadhar && (
-                <Text color="red.500">{errors.aadhar.message}</Text>
-              )}
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl>
-              <FormLabel>Upload Tax Reciept</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="file"
-                display="none"
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                // px={3}
-                control={control}
-                name="tax"
-                id="tax"
-                {...register("tax", {
-                  // required: "Tax Reciept is required",
-                  message: "invalid file",
-                })}
-              />
-              <Button
-                as="label"
-                htmlFor="tax"
-                cursor="pointer"
-                marginTop={"0.5rem"}
-                width={{ base: "250px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                px={2} // Padding on the x-axis
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                Choose File
-              </Button>
-              {errors.tax && <Text color="red.500">{errors.tax.message}</Text>}
-            </FormControl>
-          </Box>
-        </Stack> */}
-
-        {/* <Stack direction="column">
-          <Box
-            display="flex"
-            alignItems="center "
-            justifyContent="start"
-            width="100%"
-            py={1}
-            mt={"1.5rem"}
-            bgPosition="center"
-            bgRepeat="no-repeat"
-            mb={2}
-          >
-            <Button
-              // width={"8rem"}
-              // height={"2rem"}
-              bg="orange"boxShadow='dark-lg'color="black" px="4" ms="2"
-              onClick={handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
-          </Box>
-        </Stack> */}
+        
       </Flex>
     </>
   );

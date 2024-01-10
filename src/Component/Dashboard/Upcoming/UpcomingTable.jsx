@@ -53,15 +53,15 @@ import {
   
         sortable: true,
       },
-      ...(userRole !== "Sales"
-        ? [
-            {
-              name: "Added By",
-              selector: (row) => row?.createByName,
-              sortable: true,
-            },
-          ]
-        : []),
+      // ...(userRole !== "Sales"
+      //   ? [
+      //       {
+      //         name: "Added By",
+      //         selector: (row) => row?.createByName,
+      //         sortable: true,
+      //       },
+      //     ]
+      //   : []),
       // {
       //   name: "Details",
       //   cell: (row) => (

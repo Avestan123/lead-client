@@ -196,21 +196,13 @@ function EmployeeTable() {
                   Delete
                 </Button>
               </>}
-              <Menu>
-                <MenuButton as={Button} colorScheme="teal" size="sm" marginRight="2">
-                  Assign
-                </MenuButton>
-                <MenuList>
-                  {data && data.map((employee) => (
-                    <MenuItem
-                      key={employee.employeeId}
-                      onClick={() => setSelectedEmployeeId(employee._id)}
-                    >
-                      {employee.employeeName}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              </Menu>
+              <Button
+                  colorScheme="red"
+                  size="sm"
+                  onClick={() => handleDeleteRow(row)}
+                >
+                  Delete
+                </Button>
             </>
           )}
         </>
