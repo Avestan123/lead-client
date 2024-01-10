@@ -82,7 +82,7 @@ export default function Navbar() {
               mx="2"
               width={{ base: "1rem", md: "2rem" }}
               height={{ base: "1rem", md: "2rem" }}
-              src="Avatarimage.jpg"
+              src="Avatarimage.jpeg"
               marginRight={{ xs: "0.5rem", md: 0 }} // Add some margin on mobile, no margin on larger screens
               cursor="pointer"
             />
