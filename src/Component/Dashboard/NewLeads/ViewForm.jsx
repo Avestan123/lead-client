@@ -399,7 +399,7 @@ function ViewForm() {
                 id="email"
                 isDisabled={isAdmin ? false : true}
                 {...register("email", {
-                  required: "Email is required",
+                
                   message: "invalid email",
                 })}
               />
@@ -444,12 +444,12 @@ function ViewForm() {
           mt="1rem"
         >
           <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Client Type</FormLabel>
               <Select
                 placeholder="Select option"
                 marginTop={"0.5rem"}
-                isRequired
+                
                 type="text"
                 width={{ base: "100%", md: "400px" }}
                 height={"50px"}
@@ -508,11 +508,11 @@ function ViewForm() {
           mt="1rem"
         >
           <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Client Source</FormLabel>
               <Input
                 marginTop={"0.5rem"}
-                isRequired
+                
                 type="text"
                 width={{ base: "100%", md: "400px" }}
                 height={"50px"}
@@ -600,7 +600,7 @@ function ViewForm() {
               <Select
                 placeholder="is quotation sent?"
                 marginTop={"0.5rem"}
-                isRequired
+                
                 type="text"
                 width={{ base: "250px", md: "400px" }}
                 height={"50px"}
@@ -662,7 +662,7 @@ function ViewForm() {
                     mt="1rem"
                   >
                     <Box>
-                      <FormControl isRequired>
+                      <FormControl >
                         <FormLabel>Next Follow Up Date</FormLabel>
                         <Input
                           marginTop={"0.5rem"}
@@ -670,10 +670,10 @@ function ViewForm() {
                           width={{ base: "250px", md: "400px" }}
                           height={"30px"}
                           border={"1px solid #707070"}
-                          isRequired
+                          
                           name={`followUps[${index}].followUpDate`}
                           {...register(`followUps[${index}].followUpDate`, {
-                            required: "Follow Up Date is required",
+                           
                             message: "invalid follow-up date",
                           })}
                         />
@@ -685,11 +685,11 @@ function ViewForm() {
                       </FormControl>
                     </Box>
                     <Box>
-                      <FormControl isRequired>
+                      <FormControl >
                         <FormLabel>New Remarks</FormLabel>
                         <Textarea
                           marginTop={"0.5rem"}
-                          isRequired
+                          
                           type="text"
                           width={{ base: "100%", md: "400px" }}
                           height={"30px"}
@@ -697,8 +697,7 @@ function ViewForm() {
                           name={`followUps[${index}].remarks`}
                           placeholder="Enter new remarks"
                           {...register(`followUps[${index}].remarks`, {
-                            required:
-                              "New remarks are required for the follow-up",
+                           
                           })}
                         />
                         {errors.followUps && (
