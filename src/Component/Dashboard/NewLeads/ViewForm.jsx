@@ -21,11 +21,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import PopUpModal from "./PopUpModal"
 function ViewForm() {
   const location = useLocation();
   const useData = location.state;
   const [showMoreFolowUp, setShowMoreFollowUp] = useState(false);
   const [followUps, setFollowUps] = useState([{}]);
+  const [isOTPModalOpen, setOTPModalOpen] = useState(false);
 
   const addFollowUp = () => {
     setFollowUps([...followUps, {}]);
@@ -54,6 +56,12 @@ function ViewForm() {
     //   setShowMoreFollowUp(false)
     // }
   };
+
+  //handle followup delete
+  const handleDeleteFollowup = () => {
+    setOTPModalOpen(true);
+    // prompt("Are you sure want to delete?")
+  }
 
   var customerId = useData._id;
   // console.log("customer id ", customerId);
@@ -112,21 +120,16 @@ function ViewForm() {
   useEffect(() => {
     // Set initial form values
     setValue("clientName", useData.clientName);
+    setValue("referredBy", useData.referredBy);
     setValue("email", useData.email);
     setValue("number", useData.number);
-    setValue("dob", useData.dob);
-    setValue("address", useData.address);
-    setValue("city", useData.city);
-    setValue("followUpDate", useData.followUpDate);
+    setValue("clientType", useData.clientType);
     setValue("requirement", useData.requirement);
-    setValue("remarks", useData.remarks);
-    setValue("clientlevel", useData.clientlevel);
+    setValue("source", useData.source);
+    setValue("sourceurl", useData.sourceurl);
+    setValue("followUpDate", useData.followUpDate);
     setValue("followUps", useData.followUps);
-    setValue("electricityBill", useData.electricityBill);
-    setValue("gstnumber", useData.gstnumber);
-    setValue("contactperson", useData.contactperson);
-    setValue("source",useData.source)
-    setValue("sourceurl", useData.sourceurl)
+    setValue("quotation", useData.quotation);
 
     setFollowUps(useData.additionalFollowups || []);
     // additional followups
@@ -161,29 +164,17 @@ function ViewForm() {
 
     console.log("viewForm Daata", data);
     formData.append("clientName", data.clientName);
+    formData.append("referredBy",data.referredBy);
     formData.append("email", data.email);
     formData.append("number", data.number);
-    formData.append("address", data.address);
-    formData.append("city", data.city);
-    formData.append("followUpDate", data.followUpDate);
+    formData.append("clientType", data.clientType);
     formData.append("requirement", data.requirement);
-    formData.append("remarks", data.remarks);
-    formData.append("source",data.source);
-    formData.append("url", data.url)
-
+    formData.append("source", data.source);
+    formData.append("sourceurl", data.sourceurl)
+    formData.append("followUpDate", data.followUpDate);
+    formData.append("quotation", data.quotation);
     // Append file fields to the formData
-    formData.append("electricityBill", data.electricityBill);
-    formData.append("pancard", data.pancard);
-    formData.append("adharcard", data.adharcard);
-    formData.append("textRecipe", data.textRecipe);
-   
-
-    if (data.gstnumber) {
-      formData.append("gstnumber", data.gstnumber);
-    }
-    if (data.contactperson) {
-      formData.append("contactperson", data.contactperson);
-    }
+ 
     console.log(data);
     if (data.followUps) {
       data.followUps.forEach((followUp, index) => {
@@ -193,6 +184,8 @@ function ViewForm() {
         );
         formData.append(`followUps[${index}].remarks`, followUp.remarks);
       });
+    }else{
+      return alert("add more followups")
     }
     // Append follow-ups array to the formData
     formData.append("followUps", JSON.stringify(data.followUps));
@@ -221,11 +214,10 @@ function ViewForm() {
           isClosable: true,
           position: "top",
         });
+        resetForm(data);
         navigate("/newleads");
       } else {
-        resetForm(data);
-
-        toast({
+          toast({
           title: Resdata.msg || "something wrong",
           status: "error",
           duration: 3000,
@@ -323,7 +315,7 @@ function ViewForm() {
         justifyContent="center"
         mt="4"
       >
-        {/* name and email */}
+        {/* name and referred */}
         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
@@ -360,6 +352,40 @@ function ViewForm() {
           </Box>
           <Box>
             <FormControl>
+              <FormLabel>Referred By</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                type="email"
+                width={{ base: "100%", md: "400px" }}
+                height={"50px"}
+                border={"1px solid #707070"}
+                // value = {data.email}
+                backgroundColor="gray.100"
+                name="referredBy"
+                id="referredBy"
+                isDisabled={isAdmin ? false : true}
+                {...register("referredBy", {
+                  // required: "referredBy is required",
+                  message: "invalid referredBy",
+                })}
+              />
+              {errors.email && (
+                <Text color="red.500">{errors.email.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+        </Stack>
+        
+        {/* emain and mobile */}
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={6}
+          alignItems="center"
+          mx="1rem"
+          mt="1rem"
+        >
+          <Box>
+            <FormControl>
               <FormLabel>Email</FormLabel>
               <Input
                 marginTop={"0.5rem"}
@@ -382,25 +408,13 @@ function ViewForm() {
               )}
             </FormControl>
           </Box>
-        </Stack>
 
-       
-
-        {/* dob and number */}
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={6}
-          alignItems="center"
-          mx="1rem"
-          mt="1rem"
-        >
-          
           <Box>
-            <FormControl isRequired>
+            <FormControl>
               <FormLabel>Mobile Number</FormLabel>
               <Input
                 marginTop={"0.5rem"}
-                isRequired
+                
                 type="text"
                 width={{ base: "100%", md: "400px" }}
                 height={"50px"}
@@ -411,7 +425,6 @@ function ViewForm() {
                 id="number"
                 isDisabled={isAdmin ? false : true}
                 {...register("number", {
-                  required: "Mobile Number is required",
                   message: "invalid number",
                 })}
               />
@@ -420,95 +433,9 @@ function ViewForm() {
               )}
             </FormControl>
           </Box>
-          <Box>
-            <FormControl isRequired>
-              <FormLabel>Address</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="text"
-                width={{ base: "100%", md: "400px" }}
-                height={"50px"}
-                border={"1px solid #707070"}
-                isRequired
-                backgroundColor="gray.100"
-                // value = {data.address}
-                name="address"
-                id="address"
-                isDisabled={isAdmin ? false : true}
-                {...register("address", {
-                  required: "Address is required",
-                  message: "invalid address",
-                })}
-              />
-              {errors.address && (
-                <Text color="red.500">{errors.address.message}</Text>
-              )}
-            </FormControl>
-          </Box>
         </Stack>
 
-        {/* number and adddress*/}
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          spacing={6}
-          alignItems="center"
-          mx="1rem"
-          mt="1rem"
-        >
-          <Box>
-            <FormControl isRequired>
-              <FormLabel>Enter Number</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                isRequired
-                type="text"
-                width={{ base: "100%", md: "400px" }}
-                height={"50px"}
-                border={"1px solid #707070"}
-                backgroundColor="gray.100"
-                // value = {data.number}
-                name="number"
-                id="number"
-                isDisabled={isAdmin ? false : true}
-                {...register("number", {
-                  required: "Mobile Number is required",
-                  message: "invalid number",
-                })}
-              />
-              {errors.number && (
-                <Text color="red.500">{errors.number.message}</Text>
-              )}
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl isRequired>
-              <FormLabel>Address</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="text"
-                width={{ base: "100%", md: "400px" }}
-                height={"50px"}
-                border={"1px solid #707070"}
-                isRequired
-                backgroundColor="gray.100"
-                // value = {data.address}
-                name="address"
-                id="address"
-                isDisabled={isAdmin ? false : true}
-                {...register("address", {
-                  required: "Address is required",
-                  message: "invalid address",
-                })}
-              />
-              {errors.address && (
-                <Text color="red.500">{errors.address.message}</Text>
-              )}
-            </FormControl>
-          </Box>
-        </Stack>
-
-      
-        {/* Requirements & remarks */}
+        {/* Client type  & requirement */}
         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
@@ -529,54 +456,51 @@ function ViewForm() {
                 border={"1px solid #707070"}
                 control={control}
                 backgroundColor="gray.100"
-                name="requirement"
-                id="requirement"
+                name="clientType"
+                id="clientType"
                 isDisabled={isAdmin ? false : true}
                 onChange={(e) => handleSelectChange(e.target.value)}
-                // value={data.requirement}
-                // value={watch('requirement')}
-                {...register("requirement", {
-                  required: "Requirement Role is required",
+                {...register("clientType", {
                   message: "invalid input",
                 })}
               >
                 <option value="Project">Project</option>
-                <option value="Retail">Retail</option>
+                <option value="Staffing">Staffing</option>
               </Select>
-              {errors.requirement && (
-                <Text color="red.500">{errors.requirement.message}</Text>
+              {errors.clientType && (
+                <Text color="red.500">{errors.clientType.message}</Text>
               )}
             </FormControl>
           </Box>
           <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Customer Requirement</FormLabel>
               <Input
                 marginTop={"0.5rem"}
-                isRequired
+                
                 type="text"
                 width={{ base: "100%", md: "400px" }}
                 height={"50px"}
                 border={"1px solid #707070"}
                 // value = {data.remarks}
                 backgroundColor="gray.100"
-                name="city"
-                id="city"
-                placeholder="Enter remarks"
+                name="requirement"
+                id="requirement"
+                placeholder="Enter requirement"
                 isDisabled={isAdmin ? false : true}
-                {...register("remarks", {
-                  required: "Remarks are required for Project",
+                {...register("requirement", {
+                  
                 })}
               />
-              {errors.remarks && (
-                <Text color="red.500">{errors.remarks.message}</Text>
+              {errors.requirement && (
+                <Text color="red.500">{errors.requirement.message}</Text>
               )}
             </FormControl>
           </Box>
         </Stack>
 
-         {/* Source & Url */}
-         <Stack
+        {/* Source & Url */}
+        <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
           alignItems="center"
@@ -602,14 +526,14 @@ function ViewForm() {
                   message: "invalid input",
                 })}
               />
-                
+
               {errors.requirement && (
                 <Text color="red.500">{errors.requirement.message}</Text>
               )}
             </FormControl>
           </Box>
           <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Source Url</FormLabel>
               <Input
                 marginTop={"0.5rem"}
@@ -618,13 +542,13 @@ function ViewForm() {
                 height={"50px"}
                 backgroundColor="gray.100"
                 placeholder="enter requirement"
-                isRequired
+                
                 min={getCurrentDate()} // Set the minimum date
                 control={control}
                 name="sourceurl"
                 id="sourceurl"
                 {...register("sourceurl", {
-                  required: "sourceurl is required",
+                  
                   message: "invalid sourceurl",
                 })}
               />
@@ -635,7 +559,7 @@ function ViewForm() {
           </Box>
         </Stack>
 
-        {/* city and followupdate*/}
+        {/*followupdate & Quotation*/}
         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
@@ -643,9 +567,8 @@ function ViewForm() {
           mx="1rem"
           mt="1rem"
         >
-          
           <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Follow Up Date</FormLabel>
               <Input
                 marginTop={"0.5rem"}
@@ -653,14 +576,14 @@ function ViewForm() {
                 width={{ base: "250px", md: "400px" }}
                 height={"50px"}
                 border={"1px solid #707070"}
-                isRequired
+                
                 // value = {data.followUpDate}
                 backgroundColor="gray.100"
                 name="followUpDate"
                 id="followUpDate"
                 isDisabled={isAdmin ? false : true}
                 {...register("followUpDate", {
-                  required: "followUpDate is required",
+                 
                   message: "invalid followUpDate",
                 })}
               />
@@ -669,8 +592,37 @@ function ViewForm() {
               )}
             </FormControl>
           </Box>
-        </Stack>
 
+          {/* Quotation */}
+          <Box>
+            <FormControl>
+              <FormLabel>Quotation Sent Status</FormLabel>
+              <Select
+                placeholder="is quotation sent?"
+                marginTop={"0.5rem"}
+                isRequired
+                type="text"
+                width={{ base: "250px", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                control={control}
+                name="quotation"
+                id="quotation"
+                onChange={(e) => handleSelectChange(e.target.value)}
+                value={watch("quotation")}
+                {...register("quotation", {
+                  message: "invalid input",
+                })}
+              >
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </Select>
+              {errors.quotation && (
+                <Text color="red.500">{errors.quotation.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+        </Stack>
 
         {/* divider */}
         <Center w="100%" mt="2">
@@ -756,16 +708,15 @@ function ViewForm() {
                         )}
                       </FormControl>
                     </Box>
+                    {/* <Button colorScheme="red" size="sm" alignSelf="center" onClick={handleDeleteFollowup}>Delete</Button> */}
                   </Stack>
                 </>
               ))}
             </Box>
             <Center>
-              <Button colorScheme="green" onClick={handleNewFollowups} mr={5}>
+              <Button colorScheme="green" onClick={handleNewFollowups} mr={5} >
                 Add more followups
               </Button>
-
-             
 
               <Button
                 colorScheme="red"
@@ -779,100 +730,7 @@ function ViewForm() {
           </Box>
         </Stack>
 
-        {/* <Flex
-          direction={{ base: "column", md: "row" }}
-          gap="10"
-          alignItems="center"
-          justify="start"
-          // mx="1rem"
-          mt="1rem"
-        >
-          <Box
-            w={{ base: "15rem", md: "25rem" }}
-            bg="gray.300"
-            p="0.5rem"
-            borderRadius="15px"
-          >
-            <FormControl>
-              <FormLabel>Electricity Bill</FormLabel>
-              <Text>{useData.electricityBill}</Text>
-            </FormControl>
-          </Box>
-          <Box
-            w={{ base: "15rem", md: "25rem" }}
-            bg="gray.300"
-            p="0.5rem"
-            borderRadius="15px"
-          >
-            <FormControl>
-              <FormLabel>Pan Card</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="file"
-                display="none"
-                width={{ base: "400px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                name="pan"
-                id="pan"
-              />
-              <Text>{useData.pancard}</Text>
-            </FormControl>
-          </Box>
-        </Flex> */}
-
-        {/* <Flex
-          direction={{ base: "column", md: "row" }}
-          gap="10"
-          alignItems="center"
-          justify="start"
-          mx="1rem"
-          mt="2rem"
-        >
-          <Box
-            w={{ base: "15rem", md: "25rem" }}
-            bg="gray.300"
-            p="0.5rem"
-            borderRadius="15px"
-          >
-            <FormControl>
-              <FormLabel>Aadhar Card</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                isRequired
-                type="file"
-                display="none"
-                width={{ base: "400px", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                name="aadhar"
-                id="aadhar"
-              />
-              <Text>{useData.adharcard}</Text>
-            </FormControl>
-          </Box>
-          <Box
-            w={{ base: "15rem", md: "25rem" }}
-            bg="gray.300"
-            p="0.5rem"
-            borderRadius="15px"
-          >
-            <FormControl>
-              <FormLabel>Upload Tax Receipt</FormLabel>
-              <Input
-                marginTop={"0.5rem"}
-                type="file"
-                display="none"
-                width={{ base: "100vw", md: "400px" }}
-                height={"30px"}
-                border={"1px solid #707070"}
-                name="tax"
-                id="tax"
-              />
-              <Text>{useData.textRecipe}</Text>
-            </FormControl>
-          </Box>
-        </Flex> */}
+       
 
         <Flex
           direction={{ base: "column", md: "row" }}
@@ -922,6 +780,15 @@ function ViewForm() {
           )}
         </Flex>
       </Flex>
+      <PopUpModal
+            isOpen={isOTPModalOpen}
+            onClose={() =>
+
+            setOTPModalOpen(false)
+
+            }
+            // handleDelete={handleVerifyOTP}
+          />
     </>
   );
 }

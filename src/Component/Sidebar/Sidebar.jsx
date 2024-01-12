@@ -42,7 +42,7 @@ import { useWorkForm } from "../context/WorkOrderFormContext";
 
 const SideBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 1000);
   const auth = useAuth();
   const { userData } = useUser();
   const { clearFormData } = useWorkForm();
@@ -52,7 +52,7 @@ const SideBar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 768);
+      setIsMobileView(window.innerWidth <= 1000);
     };
 
     window.addEventListener("resize", handleResize);

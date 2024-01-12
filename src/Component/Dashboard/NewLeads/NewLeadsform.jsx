@@ -92,19 +92,15 @@ function NewLeadsform() {
     const token = localStorage.getItem("token");
     let formData = new FormData();
     formData.append("clientName", data.clientName);
+    formData.append("referredBy",data.referredBy);
     formData.append("email", data.email);
     formData.append("number", data.number);
-    formData.append("address", data.address);
-    formData.append("followUpDate", data.followUpDate);
+    formData.append("clientType", data.clientType);
     formData.append("requirement", data.requirement);
-    formData.append("remarks", data.remarks);
-    // formData.append("electricityBill", data.electricity[0]);
-    // formData.append("pancard", data.pan[0]);
-    // formData.append("adharcard", data.aadhar[0]);
-    // formData.append("textRecipe", data.tax[0]);
     formData.append("source", data.source);
     formData.append("sourceurl", data.sourceurl)
-
+    formData.append("followUpDate", data.followUpDate);
+    formData.append("quotation", data.quotation);
     const apiUrl = import.meta.env.VITE_APP_API_URL;
     let response = await fetch(`${apiUrl}/sales/addCustomer`, {
       method: "POST",
@@ -121,7 +117,7 @@ function NewLeadsform() {
         status: "success",
         duration: 3000,
         isClosable: true,
-        position: "top",
+        position: "center",
       });
       // resetForm(data);
       navigate("/newleads");
@@ -133,7 +129,7 @@ function NewLeadsform() {
         status: "error",
         duration: 3000,
         isClosable: true,
-        position: "top",
+        position: "center",
       });
     }
   };
@@ -151,7 +147,7 @@ function NewLeadsform() {
         mt="5"
       >
 
-        {/* Name & Email */}
+        {/* Name & Refeence */}
         <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
@@ -183,7 +179,61 @@ function NewLeadsform() {
             </FormControl>
           </Box>
           <Box>
+            <FormControl>
+              <FormLabel>Referred By</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                type="text"
+                width={{ base: "100%", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                placeholder="enter reference person Name"
+                control={control}
+                name="referredBy"
+                id="referredBy"
+                {...register("referredBy", {
+                })}
+              />
+              {errors.referredBy && (
+                <Text color="red.500">{errors.referredBy.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+        </Stack>
+
+         {/* Name & Email */}
+         <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={6}
+          // alignItems="center"
+          mx="1rem"
+        >
+          {/* <Box>
             <FormControl isRequired>
+              <FormLabel>{toggle ? "Company" : "Client"} Name</FormLabel>
+              <Input
+                marginTop={"0.5rem"}
+                isRequired
+                type="text"
+                width={{ base: "100%", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                placeholder="enter name"
+                control={control}
+                name="clientName"
+                id="clientName"
+                {...register("clientName", {
+                  required: "Client Name is required",
+                  message: "invalid input",
+                })}
+              />
+              {errors.clientName && (
+                <Text color="red.500">{errors.clientName.message}</Text>
+              )}
+            </FormControl>
+          </Box> */}
+          <Box>
+            <FormControl>
               <FormLabel>Email</FormLabel>
               <Input
                 marginTop={"0.5rem"}
@@ -196,7 +246,6 @@ function NewLeadsform() {
                 name="email"
                 id="email"
                 {...register("email", {
-                  required: "Email is required",
 
                   pattern: {
                     value: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/i,
@@ -209,12 +258,51 @@ function NewLeadsform() {
               )}
             </FormControl>
           </Box>
+          <Box>
+            <FormControl isRequired>
+              <FormLabel>Mobile Number</FormLabel>
+              <InputGroup>
+                <InputLeftAddon marginTop={"0.5rem"} height={"50px"}>
+                  +91
+                </InputLeftAddon>
+                <Input
+                  marginTop={"0.5rem"}
+                  type="text"
+                  width={{ base: "200px", md: "350px" }}
+                  height={"50px"}
+                  backgroundColor="gray.100"
+                  placeholder="Enter mobile"
+                  isRequired
+                  maxLength={10} // Change maxlength to maxLength and set it to 10
+                  control={control}
+                  name="number"
+                  id="number"
+                  {...register("number", {
+                    required: "Number is required",
+                    pattern: {
+                      value: /^[0-9]{10}$/, // Ensure exactly 10 digits
+                      message: "Invalid number format",
+                    },
+                    validate: (value) => {
+                      // validate if it is not an number
+                      if (isNaN(value)) {
+                        return "Invalid number format";
+                      }
+                    },
+                  })}
+                />
+              </InputGroup>
+              {errors.number && (
+                <Text color="red.500">{errors.number.message}</Text>
+              )}
+            </FormControl>
+          </Box>
         </Stack>
 
        
 
         {/*  MOBILE && Address*/}
-        <Stack
+        {/* <Stack
           direction={{ base: "column", md: "row" }}
           spacing={6}
           alignItems="center"
@@ -262,7 +350,7 @@ function NewLeadsform() {
           </Box>
 
           <Box>
-            <FormControl isRequired>
+            <FormControl>
               <FormLabel>Address</FormLabel>
               <Input
                 marginTop={"0.5rem"}
@@ -276,7 +364,6 @@ function NewLeadsform() {
                 name="address"
                 id="address"
                 {...register("address", {
-                  required: "Address is required",
                   message: "invalid address",
                 })}
               />
@@ -285,7 +372,7 @@ function NewLeadsform() {
               )}
             </FormControl>
           </Box>
-        </Stack>
+        </Stack> */}
 
        
 
@@ -366,7 +453,7 @@ function NewLeadsform() {
           mt="1rem"
         >
            <Box>
-            <FormControl isRequired>
+            <FormControl>
               <FormLabel>Client Type</FormLabel>
               <Select
                 placeholder="Select Client type"
@@ -377,26 +464,25 @@ function NewLeadsform() {
                 height={"50px"}
                 backgroundColor="gray.100"
                 control={control}
-                name="requirement"
-                id="requirement"
+                name="clientType"
+                id="clientType"
                 onChange={(e) => handleSelectChange(e.target.value)}
-                value={watch("requirement")}
-                {...register("requirement", {
-                  required: "Client Type is required",
+                value={watch("clientType")}
+                {...register("clientType", {
                   message: "invalid input",
                 })}
               >
                 <option value="Project">Project</option>
                 <option value="Staffing">Staffing</option>
               </Select>
-              {errors.requirement && (
-                <Text color="red.500">{errors.requirement.message}</Text>
+              {errors.clientType && (
+                <Text color="red.500">{errors.clientType.message}</Text>
               )}
             </FormControl>
           </Box>
           <Box>
-            <FormControl isRequired>
-              <FormLabel>Customer Requirement</FormLabel>
+            <FormControl>
+              <FormLabel>Client Requirement</FormLabel>
               <Textarea
                 marginTop={"0.5rem"}
                 type="date"
@@ -404,18 +490,18 @@ function NewLeadsform() {
                 // height={"50px"}
                 backgroundColor="gray.100"
                 placeholder="enter requirement"
-                isRequired
+                
                 min={getCurrentDate()} // Set the minimum date
                 control={control}
-                name="remarks"
-                id="remarks"
-                {...register("remarks", {
-                  required: "Requirement  is required",
-                  message: "invalid remarks",
+                name="requirement"
+                id="requirement"
+                {...register("requirement", {
+                  
+                  message: "invalid requirement",
                 })}
               />
-              {errors.remarks && (
-                <Text color="red.500">{errors.remarks.message}</Text>
+              {errors.requirement && (
+                <Text color="red.500">{errors.requirement.message}</Text>
               )}
             </FormControl>
           </Box>
@@ -431,11 +517,11 @@ function NewLeadsform() {
           mt="1rem"
         >
            <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Client Source</FormLabel>
               <Input
                 marginTop={"0.5rem"}
-                isRequired
+                
                 type="text"
                 width={{ base: "100%", md: "400px" }}
                 height={"50px"}
@@ -445,7 +531,7 @@ function NewLeadsform() {
                 name="source"
                 id="source"
                 {...register("source", {
-                  required: "source is required",
+                  
                   message: "invalid input",
                 })}
               />
@@ -455,7 +541,7 @@ function NewLeadsform() {
             </FormControl>
           </Box>
           <Box>
-            <FormControl isRequired>
+            <FormControl >
               <FormLabel>Source URL</FormLabel>
               <Input
                 marginTop={"0.5rem"}
@@ -464,13 +550,13 @@ function NewLeadsform() {
                 height={"50px"}
                 backgroundColor="gray.100"
                 placeholder="enter requirement"
-                isRequired
+                
                 min={getCurrentDate()} // Set the minimum date
                 control={control}
                 name="sourceurl"
                 id="sourceurl"
                 {...register("sourceurl", {
-                  required: "sourceurl is required",
+                
                   message: "invalid sourceurl",
                 })}
               />
@@ -479,6 +565,8 @@ function NewLeadsform() {
               )}
             </FormControl>
           </Box>
+
+
          
         </Stack>
 
@@ -517,6 +605,36 @@ function NewLeadsform() {
               />
               {errors.followUpDate && (
                 <Text color="red.500">{errors.followUpDate.message}</Text>
+              )}
+            </FormControl>
+          </Box>
+
+          {/* Quotation */}
+          <Box>
+            <FormControl>
+              <FormLabel>Quotation Sent Status</FormLabel>
+              <Select
+                placeholder="is quotation sent?"
+                marginTop={"0.5rem"}
+                isRequired
+                type="text"
+                width={{ base: "250px", md: "400px" }}
+                height={"50px"}
+                backgroundColor="gray.100"
+                control={control}
+                name="quotation"
+                id="quotation"
+                onChange={(e) => handleSelectChange(e.target.value)}
+                value={watch("quotation")}
+                {...register("quotation", {
+                  message: "invalid input",
+                })}
+              >
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </Select>
+              {errors.quotation && (
+                <Text color="red.500">{errors.quotation.message}</Text>
               )}
             </FormControl>
           </Box>
