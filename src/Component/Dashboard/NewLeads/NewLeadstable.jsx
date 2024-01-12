@@ -45,7 +45,7 @@ function NewLeadstable() {
 
     {
       name: "Requirements",
-      selector: (row) => row.lead.requirement,
+      selector: (row) => row.lead.clientType,
       sortable: true,
     },
 
