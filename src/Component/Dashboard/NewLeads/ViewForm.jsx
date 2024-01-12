@@ -464,8 +464,10 @@ function ViewForm() {
                   message: "invalid input",
                 })}
               >
-                <option value="Project">Project</option>
-                <option value="Staffing">Staffing</option>
+                 <option value="Project">Project</option>
+                <option value="Freelance">Freelance</option>
+                <option value="IT Staffing">IT Staffing</option>
+                <option value="Non IT Staffing">Non IT Staffing</option>
               </Select>
               {errors.clientType && (
                 <Text color="red.500">{errors.clientType.message}</Text>
