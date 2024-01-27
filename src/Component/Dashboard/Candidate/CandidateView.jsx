@@ -37,7 +37,7 @@ function CandidateView() {
 
       useEffect(()=>{
         setValue("cName", useData.cName);
-        setValue("candidateSource", useData.candidateSource);
+        setValue("experience", useData.experience);
         setValue("email", useData.email);
         setValue("number", useData.number);
         setValue("education", useData.education);
@@ -90,7 +90,7 @@ function CandidateView() {
               </Box>
               <Box>
                 <FormControl>
-                  <FormLabel>Candidate Source</FormLabel>
+                  <FormLabel>Candidate Experience</FormLabel>
                   <Input
                     marginTop={"0.5rem"}
                     isRequired
@@ -100,14 +100,14 @@ function CandidateView() {
                     backgroundColor="gray.100"
                     placeholder="enter name"
                     control={control}
-                    name="candidateSource"
-                    id="candidateSource"
-                    {...register("candidateSource", {
+                    name="experience"
+                    id="experience"
+                    {...register("experience", {
                       message: "invalid input",
                     })}
                   />
-                  {errors.candidateSource && (
-                    <Text color="red.500">{errors.candidateSource.message}</Text>
+                  {errors.experience && (
+                    <Text color="red.500">{errors.experience.message}</Text>
                   )}
                 </FormControl>
               </Box>
