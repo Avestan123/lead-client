@@ -40,6 +40,9 @@ import Customers from "./Component/Dashboard/Customers/Customers";
 import NextDay from "./Component/Dashboard/NextDay/NextDay";
 import Upcoming from "./Component/Dashboard/Upcoming/Upcoming";
 import Missed from "./Component/Dashboard/Missed/Missed";
+import CandidateForm from "./Component/Dashboard/Candidate/CandidateForm";
+import CandidateTable from "./Component/Dashboard/Candidate/CandidateTable";
+import CandidateView from "./Component/Dashboard/Candidate/CandidateView";
 
 
 const router = createBrowserRouter(
@@ -80,6 +83,18 @@ const router = createBrowserRouter(
         <Route
           path="newleads/viewform"
           element={<ProtectedRoute Component={ViewForm} />}
+        />
+        <Route
+         path="candidateForm"
+         element={<ProtectedRoute Component={CandidateForm} />}
+        />
+        <Route
+         path="candidateTable"
+         element={<ProtectedRoute Component={CandidateTable} />}
+        />
+        <Route
+         path="candidateView"
+         element={<ProtectedRoute Component={CandidateView} />}
         />
         <Route
           path="newEmpoyee"

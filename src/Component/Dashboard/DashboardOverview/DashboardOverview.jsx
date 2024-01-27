@@ -10,7 +10,8 @@ import {
   CardFooter,
   Img,
   Button,
-  Spinner
+  Spinner,
+  Stack
 } from "@chakra-ui/react";
 import { useUser } from "../../context/UserContext";
 import TodaysLeads from "./TodaysLeads";
@@ -130,11 +131,19 @@ const DashboardOverview = () => {
     <h3>loading...</h3></Box>
       ) : (
         <>
+        <Flex justifyContent="flex-end">
           <Box display="flex" justifyContent="flex-end" mx="5">
             <Link to="/newleads/form">
-              <Button colorScheme='whatsapp' leftIcon={<AddIcon />}>Add Leads</Button>
+              <Button colorScheme='teal' leftIcon={<AddIcon />}>Add Leads</Button>
             </Link>
           </Box>
+
+          <Box display="flex" justifyContent="flex-end" mx="5">
+            <Link to="/candidateForm">
+              <Button colorScheme='red' leftIcon={<AddIcon />}>Add Candidate</Button>
+            </Link>
+          </Box>
+          </Flex>
           <Flex direction={{ base: "column", md: "row" }} gap="25px">
             {/* Total Customers and Total Leads*/}
             <Flex

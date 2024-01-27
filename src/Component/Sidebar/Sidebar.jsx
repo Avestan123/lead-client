@@ -167,28 +167,43 @@ const SideBar = () => {
             </Flex>
           </ListItem>
 
+          <ListItem className="listItem" p="8px" borderRadius="10px">
+            <Flex alignItems="start" justify="start">
+              <GroupOutlinedIcon />
+              <NavLink to="candidateTable">
+                <Text
+                  as="span"
+                  color="#595c5f"
+                  fontSize={{ base: "0.5rem", md: "1.2rem" }}
+                  marginLeft="8px"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                Candidates
+                </Text>
+              </NavLink>
+            </Flex>
+          </ListItem>
+
+          <ListItem className="listItem" p="8px" borderRadius="10px">
+            <Flex alignItems="start" justify="start">
+              <GroupAddOutlinedIcon />
+              <NavLink to="candidateForm">
+                <Text
+                  as="span"
+                  color="#595c5f"
+                  fontSize={{ base: "0.5rem", md: "1.2rem" }}
+                  marginLeft="8px"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  Add Candidate
+                </Text>
+              </NavLink>
+            </Flex>
+          </ListItem>
+
          
 
-          {/* <ListItem className="listItem" p="10px" borderRadius="10px">
-            <Flex alignItems="start" justify="start">
-              <ExitToAppIcon />
-
-              <Text
-                as="span"
-                color="#595c5f"
-                fontSize={{ base: "0.5rem", md: "1.2rem" }}
-                marginLeft="8px"
-                _hover={{
-                  textDecoration: "underline",
-                  textShadow: "0px 0px 30px yellow", // Adjust the values as needed
-                }}
-                onClick={handleLogout}
-              >
-                SignOut
-              </Text>
-            </Flex>
-          </ListItem> */}
-
+        
           {/* Rest of your desktop sidebar items */}
         </List>
       )}
@@ -271,6 +286,38 @@ const SideBar = () => {
                         onClick={onClose}
                       >
                         Add Leads
+                      </Text>
+                    </NavLink>
+                  </ListItem>
+
+                  <ListItem className="listItem" p="8px" borderRadius="10px">
+                    <GroupAddOutlinedIcon />
+                    <NavLink to="candidateTable">
+                      <Text
+                        as="span"
+                        color="black"
+                        // fontSize={{ base: "0.5rem", md: "1.2rem" }}
+                        marginLeft="8px"
+                        _hover={{ textDecoration: "underline" }}
+                        onClick={onClose}
+                      >
+                        Candidates
+                      </Text>
+                    </NavLink>
+                  </ListItem>
+
+                  <ListItem className="listItem" p="8px" borderRadius="10px">
+                    <GroupAddOutlinedIcon />
+                    <NavLink to="candidateForm">
+                      <Text
+                        as="span"
+                        color="black"
+                        // fontSize={{ base: "0.5rem", md: "1.2rem" }}
+                        marginLeft="8px"
+                        _hover={{ textDecoration: "underline" }}
+                        onClick={onClose}
+                      >
+                        Add Candidate
                       </Text>
                     </NavLink>
                   </ListItem>
