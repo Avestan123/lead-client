@@ -91,7 +91,7 @@ const SideBar = () => {
       {!isMobileView && (
         <List p="10px" mt="1rem" ml="0.5rem">
           <ListItem className="listItem" p="10px" borderRadius="10px">
-            <Flex alignItems="start" justify="start">
+            <Flex alignItems="center" justify="start">
               <DashboardOutlinedIcon style={{ marginTop: "0rem" }} />
               <NavLink
                 to=""
@@ -116,7 +116,7 @@ const SideBar = () => {
 
           {isAdmin && (
             <ListItem className="listItem" p="10px" borderRadius="10px">
-              <Flex alignItems="start" justify="start">
+              <Flex alignItems="center" justify="start">
                 <BadgeOutlinedIcon />
                 <NavLink to="newEmpoyee">
                   <Text
@@ -134,7 +134,7 @@ const SideBar = () => {
           )}
 
           <ListItem className="listItem" p="8px" borderRadius="10px">
-            <Flex alignItems="start" justify="start">
+            <Flex  alignItems="center"  justify="start">
               <GroupOutlinedIcon />
               <NavLink to="newleads">
                 <Text
@@ -151,7 +151,7 @@ const SideBar = () => {
           </ListItem>
 
           <ListItem className="listItem" p="8px" borderRadius="10px">
-            <Flex alignItems="start" justify="start">
+            <Flex  alignItems="center"  justify="start">
               <GroupAddOutlinedIcon />
               <NavLink to="newleads/form">
                 <Text
@@ -168,7 +168,7 @@ const SideBar = () => {
           </ListItem>
 
           <ListItem className="listItem" p="8px" borderRadius="10px">
-            <Flex alignItems="start" justify="start">
+            <Flex  alignItems="center"  justify="start">
               <GroupOutlinedIcon />
               <NavLink to="candidateTable">
                 <Text
@@ -185,7 +185,7 @@ const SideBar = () => {
           </ListItem>
 
           <ListItem className="listItem" p="8px" borderRadius="10px">
-            <Flex alignItems="start" justify="start">
+            <Flex alignItems="center" justify="start">
               <GroupAddOutlinedIcon />
               <NavLink to="candidateForm">
                 <Text
@@ -242,6 +242,7 @@ const SideBar = () => {
 
                   {isAdmin && (
                     <ListItem className="listItem" p="10px" borderRadius="10px">
+                       <Flex alignItems="center">
                       <BadgeOutlinedIcon />
                       <NavLink to="newEmpoyee">
                         <Text
@@ -255,10 +256,12 @@ const SideBar = () => {
                           Employee
                         </Text>
                       </NavLink>
+                      </Flex>
                     </ListItem>
                   )}
 
                   <ListItem className="listItem" p="10px" borderRadius="10px">
+                  <Flex alignItems="center">
                     <GroupOutlinedIcon />
                     <NavLink to="/newleads">
                       <Text
@@ -272,9 +275,11 @@ const SideBar = () => {
                         My Leads
                       </Text>
                     </NavLink>
+                    </Flex>
                   </ListItem>
 
                   <ListItem className="listItem" p="8px" borderRadius="10px">
+                  <Flex alignItems="center">
                     <GroupAddOutlinedIcon />
                     <NavLink to="newleads/form">
                       <Text
@@ -288,9 +293,11 @@ const SideBar = () => {
                         Add Leads
                       </Text>
                     </NavLink>
+                    </Flex>
                   </ListItem>
 
                   <ListItem className="listItem" p="8px" borderRadius="10px">
+                  <Flex alignItems="center">
                     <GroupAddOutlinedIcon />
                     <NavLink to="candidateTable">
                       <Text
@@ -304,9 +311,11 @@ const SideBar = () => {
                         Candidates
                       </Text>
                     </NavLink>
+                    </Flex>
                   </ListItem>
 
                   <ListItem className="listItem" p="8px" borderRadius="10px">
+                  <Flex alignItems="center">
                     <GroupAddOutlinedIcon />
                     <NavLink to="candidateForm">
                       <Text
@@ -320,6 +329,7 @@ const SideBar = () => {
                         Add Candidate
                       </Text>
                     </NavLink>
+                    </Flex>
                   </ListItem>
 
                  

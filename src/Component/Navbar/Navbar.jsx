@@ -82,13 +82,13 @@ export default function Navbar() {
               mx="2"
               width={{ base: "1rem", md: "2rem" }}
               height={{ base: "1rem", md: "2rem" }}
-              src="Avatarimage.jpeg"
+              src="user.png"
               marginRight={{ xs: "0.5rem", md: 0 }} // Add some margin on mobile, no margin on larger screens
               cursor="pointer"
             />
 
 
-           <Text fontSize={{ base: "0.5rem", md: "1rem" }} color="#595c5f" >Logout</Text>
+           <Text fontSize={{ base: "0.5rem", md: "1rem" }} color="#595c5f" px="2" >Logout</Text>
 
           </Tag>
 
